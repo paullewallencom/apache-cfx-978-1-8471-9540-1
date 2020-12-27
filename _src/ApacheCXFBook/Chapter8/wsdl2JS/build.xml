@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project name="cxf wsdl2java" basedir=".">   
+    <property environment="env"/>
+	<condition property="cxf.home" value="${env.CXF_HOME}">
+        <isset property="env.CXF_HOME"/>
+    </condition>
+    <condition property="cxf.home" value="../..">
+        <available file="../../etc" type="dir" property=""/>
+    </condition>
+    <condition property="cxf.home" value="../../..">
+        <available file="../../../etc" type="dir" property=""/>
+    </condition>
+    <property name="cxf.home" location="../.."/>
+    <property name="cxf.etc.dir" location="${cxf.home}/etc"/>
+
+    <property name="build.dir" location ="${basedir}/build"/>
+    <property name="build.classes.dir" location ="${build.dir}/classes"/>
+    <property name="build.src.dir" location ="${build.dir}/src"/>
+    <property name="build.var.dir" location ="${build.dir}/var"/>
+
+    <property name="build.dir" location ="${basedir}/build"/>
+    <property name="build.classes.dir" location ="${build.dir}/classes"/>
+    <property name="build.src.dir" location ="${build.dir}/src"/>
+    <property name="build.var.dir" location ="${build.dir}/var"/>
+   
+   <path id="cxf.classpath">
+      <fileset dir="${cxf.home}/lib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${basedir}"/>
+	  <pathelement location="${build.classes.dir}"/>
+   </path>
+      
+   <target name="cxfWSDLToJS">
+      <java classname="org.apache.cxf.tools.wsdlto.javascript.WSDLToJavaScript" fork="true">
+		 <arg value="-d"/>
+         <arg value="src"/>
+         <arg value="http://www.ignyte.com/webservices/ignyte.whatsshowing.webservice/moviefunctions.asmx?wsdl"/>
+         <classpath>
+            <path refid="cxf.classpath"/>
+         </classpath>
+      </java>
+   </target>
+
+   <target name="clean">
+        <delete dir="${build.classes.dir}"/>
+        <delete dir="${build.src.dir}"/>
+        <delete dir="${build.dir}"/>
+    </target>
+</project>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<bean id="loanProcess" class="demo.spring.LoanProcessImpl">
+		<property name="verifyAddress">
+			<ref bean="verifyAddress" />
+		</property>
+		<property name="verifyCredit">
+			<ref bean="verifyCredit" />
+		</property>
+		<property name="loanAssessment">
+			<ref bean="loanAssessment" />
+		</property>
+	</bean>
+	
+
+	<bean id="verifyAddress" class="demo.spring.VerifyAddressImpl">
+    	<!--  wire dependency-->
+    </bean>
+    
+    
+    <bean id="verifyCredit" class="demo.spring.VerifyCreditImpl">
+    	<!--  wire dependency-->
+    </bean>
+	
+	 <bean id="loanAssessment" class="demo.spring.LoanAssessmentImpl">
+    	<!--  wire dependency-->
+    </bean>
+		
+</beans>

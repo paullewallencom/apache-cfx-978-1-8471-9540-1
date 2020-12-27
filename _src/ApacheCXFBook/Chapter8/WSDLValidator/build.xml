@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project name="cxf wsdl2java" basedir=".">   
+   <property environment="env"/>
+	<condition property="cxf.home" value="${env.CXF_HOME}">
+        <isset property="env.CXF_HOME"/>
+    </condition>
+    <condition property="cxf.home" value="../..">
+        <available file="../../etc" type="dir" property=""/>
+    </condition>
+    <condition property="cxf.home" value="../../..">
+        <available file="../../../etc" type="dir" property=""/>
+    </condition>
+    <property name="cxf.home" location="../.."/>
+    <property name="cxf.etc.dir" location="${cxf.home}/etc"/>
+
+    <property name="build.dir" location ="${basedir}/build"/>
+    <property name="build.classes.dir" location ="${build.dir}/classes"/>
+    <property name="build.src.dir" location ="${build.dir}/src"/>
+    <property name="build.var.dir" location ="${build.dir}/var"/>
+
+    <property name="build.dir" location ="${basedir}/build"/>
+    <property name="build.classes.dir" location ="${build.dir}/classes"/>
+    <property name="build.src.dir" location ="${build.dir}/src"/>
+    <property name="build.var.dir" location ="${build.dir}/var"/>
+
+   
+   <path id="cxf.classpath">
+      <fileset dir="${cxf.home}/lib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${basedir}"/>
+	  <pathelement location="${build.classes.dir}"/>
+   </path>
+      
+   <target name="cxfWSDLValidator">
+      <java classname="org.apache.cxf.tools.validator.WSDLValidator" fork="true">
+		  <!-- Change this to Local Movie Service URL-->	
+          <arg value="http://localhost:9082/MovieService?wsdl"/>
+         <classpath>
+            <path refid="cxf.classpath"/>
+         </classpath>
+      </java>
+   </target>
+
+   
+</project>

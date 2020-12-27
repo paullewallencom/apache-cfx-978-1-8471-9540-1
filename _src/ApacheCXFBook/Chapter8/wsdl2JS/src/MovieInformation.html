@@ -1,0 +1,93 @@
+<head>
+<script type="text/javascript" src="cxf-utils.js"></script>
+<script type="text/javascript" src="MovieInformation.js"></script>
+
+<script language="JavaScript" type="text/javascript">
+
+function addDataTable(name,value)
+{
+  var tbl = document.getElementById('tblResults');
+  var lastRow = tbl.rows.length;
+  var row = tbl.insertRow(lastRow);
+  
+  // left cell
+  var cellLeft = row.insertCell(0);
+  var textNodeLeft = document.createTextNode(name);
+  cellLeft.appendChild(textNodeLeft);
+  
+  // right cell
+  var cellRight = row.insertCell(1);
+  var textNodeRight = document.createTextNode(value);
+  cellRight.appendChild(textNodeRight);
+
+   
+}
+</script>
+
+<script type="text/javascript">
+
+var MovieService = new www_ignyte_com_whatsshowing_MovieInformationSoap();
+
+MovieService.url = "http://www.ignyte.com/webservices/ignyte.whatsshowing.webservice/moviefunctions.asmx";
+//MovieService.url = "http://localhost:9082/MovieService";
+
+
+function invokeMovieInformation()
+{
+  var zipCode = document.movieinfoform.zipCode.value;
+  var radius = document.movieinfoform.radius.value;
+  MovieService.GetTheatersAndMovies(sucessResponse,errorResponse,zipCode,radius);
+
+}
+
+
+<!-- This is the function called for an sucessResponse. -->
+function sucessResponse(response)
+{
+	addDataTable("Length of Theatres " , response.getGetTheatersAndMoviesResult().getTheater().length);
+	addDataTable("First Theatre name " ,  response.getGetTheatersAndMoviesResult().getTheater()[0].getName());
+	addDataTable("First Theatre address  " , response.getGetTheatersAndMoviesResult().getTheater()[0].getAddress())
+	addDataTable("Count of Movies running in Fisrt Theatre - " , response.getGetTheatersAndMoviesResult().getTheater()[0].getMovies().getMovie().length)
+	var movieLength = response.getGetTheatersAndMoviesResult().getTheater()[0].getMovies().getMovie().length;
+	var i=0;
+	for (i=0;i<movieLength;i++)
+	{
+		addDataTable( i+1 + " Movie Name" , response.getGetTheatersAndMoviesResult().getTheater()[0].getMovies().getMovie()[i].getName())
+	}
+
+	
+
+	
+}
+
+<!-- This is the function called for an error. -->
+function errorResponse(error)
+{
+      alert("Error message is " + error);
+}
+
+</script>
+</head>
+<body>
+<h1>
+Movie Information Client
+</h1>
+<form name="movieinfoform">
+ZipCode: <input type="text" name ="zipCode" value="78759"/><br/>
+Radius:  <input type="text" name ="radius" value="2"/><br/><br/>
+
+Invoke Movie Information- <input type="button" value="Invoke" name="Invoke Movie Information"
+onClick="invokeMovieInformation()">
+
+<br/><br/>
+
+<table border="1" id="tblResults">
+  <tr>
+    <th colspan="2">Movie Results Web Service</th>
+  </tr>
+</table>
+
+
+</form>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<project name="cxf wsdl2java" basedir=".">   
+    <property environment="env"/>
+	<condition property="cxf.home" value="${env.CXF_HOME}">
+        <isset property="env.CXF_HOME"/>
+    </condition>
+    <condition property="cxf.home" value="../..">
+        <available file="../../etc" type="dir" property=""/>
+    </condition>
+    <condition property="cxf.home" value="../../..">
+        <available file="../../../etc" type="dir" property=""/>
+    </condition>
+    <property name="cxf.home" location="../.."/>
+    <property name="cxf.etc.dir" location="${cxf.home}/etc"/>
+
+    <property name="build.dir" location ="${basedir}/build"/>
+    <property name="build.classes.dir" location ="${build.dir}/classes"/>
+    <property name="build.src.dir" location ="${build.dir}/src"/>
+    <property name="build.var.dir" location ="${build.dir}/var"/>
+
+   
+   <path id="cxf.classpath">
+      <fileset dir="${cxf.home}/lib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${basedir}"/>
+	  <pathelement location="${build.classes.dir}"/>
+   </path>
+      
+   <target name="cxfWSDLToJava">
+      <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true">
+         <arg value="-client"/>
+         <arg value="-d"/>
+         <arg value="src"/>
+         <arg value="http://www.ignyte.com/webservices/ignyte.whatsshowing.webservice/moviefunctions.asmx?wsdl"/>
+         <classpath>
+            <path refid="cxf.classpath"/>
+         </classpath>
+      </java>
+   </target>
+
+   <target name="build">
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.src.dir}"/>
+
+        <javac destdir="${build.classes.dir}" debug="true">
+            <src path="${build.src.dir}"/>
+            <src path="${basedir}/src"/>
+            <classpath>
+                <path refid="cxf.classpath"/>
+            </classpath>
+        </javac>
+
+
+        <copy todir="${build.classes.dir}">
+<fileset dir="${basedir}/src" includes="**/*.xml, **/*.txt" />
+ <fileset dir="${build.src.dir}" includes="**/*.xml, **/*.txt" />
+        </copy>
+    </target>
+
+	
+    <target name="clean">
+        <delete dir="${build.classes.dir}"/>
+        <delete dir="${build.src.dir}"/>
+        <delete dir="${build.dir}"/>
+    </target>
+
+   <target name="runClient">
+      <java classname="com.ignyte.whatsshowing.MovieInformationSoap_MovieInformationSoap12_Client" fork="true">
+          <classpath>
+            <path refid="cxf.classpath"/>
+         </classpath>
+      </java>
+   </target>
+</project>

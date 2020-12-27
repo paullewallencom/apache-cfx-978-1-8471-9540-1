@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="MovieInformationSoapService" targetNamespace="http://www.ignyte.com/whatsshowing" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.ignyte.com/whatsshowing" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ignyte.com/whatsshowing" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ignyte.com/whatsshowing">
+<xs:element name="GetTheatersAndMovies">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="zipCode" type="xs:string"/>
+<xs:element name="radius" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetTheatersAndMoviesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="GetTheatersAndMoviesResult" type="tns:ArrayOfTheater"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetUpcomingMovies">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="month" type="xs:int"/>
+<xs:element name="year" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetUpcomingMoviesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="GetUpcomingMoviesResult" type="tns:ArrayOfUpcomingMovie"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="ArrayOfUpcomingMovie">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="UpcomingMovie" nillable="true" type="tns:UpcomingMovie"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="UpcomingMovie">
+<xs:sequence>
+<xs:element minOccurs="0" name="MovieName" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ArrayOfTheater">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Theater" nillable="true" type="tns:Theater"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Theater">
+<xs:sequence>
+<xs:element minOccurs="0" name="Name" type="xs:string"/>
+<xs:element minOccurs="0" name="Address" type="xs:string"/>
+<xs:element minOccurs="0" name="Movies" type="tns:ArrayOfMovie"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ArrayOfMovie">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Movie" nillable="true" type="tns:Movie"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Movie">
+<xs:sequence>
+<xs:element minOccurs="0" name="Rating" type="xs:string"/>
+<xs:element minOccurs="0" name="Name" type="xs:string"/>
+<xs:element minOccurs="0" name="RunningTime" type="xs:string"/>
+<xs:element minOccurs="0" name="ShowTimes" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GetUpcomingMoviesResponse">
+    <wsdl:part name="parameters" element="tns:GetUpcomingMoviesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetTheatersAndMoviesResponse">
+    <wsdl:part name="parameters" element="tns:GetTheatersAndMoviesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetTheatersAndMovies">
+    <wsdl:part name="parameters" element="tns:GetTheatersAndMovies">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUpcomingMovies">
+    <wsdl:part name="parameters" element="tns:GetUpcomingMovies">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="MovieInformationSoap">
+    <wsdl:operation name="GetUpcomingMovies">
+      <wsdl:input name="GetUpcomingMovies" message="tns:GetUpcomingMovies">
+    </wsdl:input>
+      <wsdl:output name="GetUpcomingMoviesResponse" message="tns:GetUpcomingMoviesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTheatersAndMovies">
+      <wsdl:input name="GetTheatersAndMovies" message="tns:GetTheatersAndMovies">
+    </wsdl:input>
+      <wsdl:output name="GetTheatersAndMoviesResponse" message="tns:GetTheatersAndMoviesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MovieInformationSoapServiceSoapBinding" type="tns:MovieInformationSoap">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetUpcomingMovies">
+      <soap:operation soapAction="http://www.ignyte.com/whatsshowing/GetUpcomingMovies" style="document"/>
+      <wsdl:input name="GetUpcomingMovies">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetUpcomingMoviesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTheatersAndMovies">
+      <soap:operation soapAction="http://www.ignyte.com/whatsshowing/GetTheatersAndMovies" style="document"/>
+      <wsdl:input name="GetTheatersAndMovies">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetTheatersAndMoviesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MovieInformationSoapService">
+    <wsdl:port name="MovieInformationSoapPort" binding="tns:MovieInformationSoapServiceSoapBinding">
+      <soap:address location="http://localhost:9090/MovieInformationSoapPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
